@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-campuslab-bff
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # URL del Tenant de Azure AD / Entra ID
+          issuer-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:common}/v2.0
+          # Client ID o URI del Scope registrado para la API en Azure
+          audiences: api://${AZURE_CLIENT_ID:campuslab-api-id}
+
+# Rutas de los microservicios de dominio (para delegar/proxyear peticiones)
+services:
+  bookings-url: ${BOOKINGS_SVC_URL:http://localhost:8081}
+  catalog-url: ${CATALOG_SVC_URL:http://localhost:8082}
+  reports-url: ${REPORTS_SVC_URL:http://localhost:8083}

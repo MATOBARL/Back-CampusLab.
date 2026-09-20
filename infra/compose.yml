@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  ms-campuslab-bff:
+    build:
+      context: ../ms-campuslab-bff
+      dockerfile: Dockerfile
+    container_name: ms-campuslab-bff
+    ports:
+      - "8080:8080"
+    environment:
+      - BOOKINGS_SVC_URL=http://ms-campuslab-bookings:8081
+      - CATALOG_SVC_URL=http://ms-campuslab-catalog:8082
+      - REPORTS_SVC_URL=http://ms-campuslab-reports:8083
+    depends_on:
+      - ms-campuslab-bookings
+      - ms-campuslab-catalog
+      - ms-campuslab-reports
+    networks:
+      - campuslab-network
+
+  ms-campuslab-bookings:
+    build:
+      context: ../ms-campuslab-bookings
+      dockerfile: Dockerfile
+    container_name: ms-campuslab-bookings
+    ports:
+      - "8081:8081"
+    networks:
+      - campuslab-network
+
+  ms-campuslab-catalog:
+    build:
+      context: ../ms-campuslab-catalog
+      dockerfile: Dockerfile
+    container_name: ms-campuslab-catalog
+    ports:
+      - "8082:8082"
+    networks:
+      - campuslab-network
+
+  ms-campuslab-reports:
+    build:
+      context: ../ms-campuslab-reports
+      dockerfile: Dockerfile
+    container_name: ms-campuslab-reports
+    ports:
+      - "8083:8083"
+    networks:
+      - campuslab-network
+
+networks:
+  campuslab-network:
+    driver: bridge
